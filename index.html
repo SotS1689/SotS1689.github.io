@@ -11,85 +11,158 @@
     gtag('config', 'G-YW31K785WW');
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Taylor Drummond — Tools for Bible Study</title>
-<meta name="description" content="Free tools for reading, studying, and singing Scripture: Greek and Hebrew search, discourse analysis, hymns in four-part harmony, and more.">
-<meta property="og:title" content="Taylor Drummond — Tools for Bible Study">
-<meta property="og:description" content="Free tools for reading, studying, and singing Scripture.">
+<title>Taylor Drummond — Free tools for pastors, students, and families</title>
+<meta name="description" content="Free tools built for pastors, students, and families: Greek and Hebrew search, discourse analysis, hymns in four-part harmony, and more.">
+<meta property="og:title" content="Taylor Drummond">
+<meta property="og:description" content="Free tools built for pastors, students, and families.">
 <meta property="og:url" content="https://taylordrummond.org/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#f7f4ee" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#16181c" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="DA-Tool/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
 <style>
     :root {
-        --bg: #f7f4ee; --surface: #ffffff; --line: #e2ddd2;
+        --bg: #f7f4ee; --bg-2: #efe8db; --surface: #ffffff; --line: #e2ddd2;
         --text: #1d1c1a; --text-2: #5e5a52; --brand: #7a3b2e; --on-brand: #ffffff;
+        --support: #10b981; --support-hover: #059669;
+        --shadow: 0 1px 2px rgb(60 40 20 / 0.06), 0 8px 24px rgb(60 40 20 / 0.07);
+        --shadow-hover: 0 2px 4px rgb(60 40 20 / 0.08), 0 16px 36px rgb(60 40 20 / 0.13);
+        --graph-line: rgb(90 70 50 / 0.13); --graph-node: rgb(90 70 50 / 0.26); --graph-accent: rgb(122 59 46 / 0.34);
     }
     @media (prefers-color-scheme: dark) {
         :root:not([data-theme="light"]) {
-            --bg: #16181c; --surface: #1f2228; --line: #33373f;
+            --bg: #16181c; --bg-2: #1c1f25; --surface: #1f2228; --line: #33373f;
             --text: #ecebe8; --text-2: #a9a69f; --brand: #e0937f; --on-brand: #1a1210;
+            --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.25);
+            --shadow-hover: 0 2px 4px rgb(0 0 0 / 0.35), 0 16px 36px rgb(0 0 0 / 0.4);
+            --graph-line: rgb(200 210 225 / 0.08); --graph-node: rgb(200 210 225 / 0.17); --graph-accent: rgb(224 147 127 / 0.3);
         }
     }
     :root[data-theme="dark"] {
-        --bg: #16181c; --surface: #1f2228; --line: #33373f;
+        --bg: #16181c; --bg-2: #1c1f25; --surface: #1f2228; --line: #33373f;
         --text: #ecebe8; --text-2: #a9a69f; --brand: #e0937f; --on-brand: #1a1210;
+        --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.25);
+        --shadow-hover: 0 2px 4px rgb(0 0 0 / 0.35), 0 16px 36px rgb(0 0 0 / 0.4);
+        --graph-line: rgb(200 210 225 / 0.08); --graph-node: rgb(200 210 225 / 0.17); --graph-accent: rgb(224 147 127 / 0.3);
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
         margin: 0; background: var(--bg); color: var(--text);
-        font: 16px/1.55 Georgia, "Times New Roman", serif;
+        font: 17px/1.6 "Source Serif 4", Georgia, "Times New Roman", serif;
         padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
-    header {
-        max-width: 880px; margin: 0 auto; padding: 16px;
-        display: flex; align-items: center; justify-content: space-between; gap: 8px;
-    }
-    .brand { font-weight: 700; font-size: 1.05rem; }
-    .actions { display: flex; gap: 4px; }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+
+    /* Faded node-graph backdrop (drawn by script below) */
+    #graph { position: fixed; top: 0; left: 0; width: 100%; z-index: -1; pointer-events: none; }
+
+    /* ---- Header ---- */
+    header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 14px; padding-bottom: 14px; }
+    .brand { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 1.45rem; letter-spacing: 0.01em; color: inherit; text-decoration: none; }
+    nav.sections { display: flex; gap: 22px; margin-left: auto; margin-right: 12px; }
+    nav.sections a { color: var(--text-2); text-decoration: none; font-size: 0.95rem; }
+    nav.sections a:hover { color: var(--brand); }
+    .actions { display: flex; align-items: center; gap: 6px; }
     .icon-btn {
         width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center;
-        border: 0; border-radius: 10px; background: none; color: var(--text); cursor: pointer;
+        border: 0; border-radius: 12px; background: none; color: var(--text); cursor: pointer;
     }
     .icon-btn:hover { background: var(--surface); }
     .icon-btn svg { width: 22px; height: 22px; fill: currentColor; }
-    #support { color: var(--brand); }
+    .support-btn {
+        display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px;
+        border-radius: 999px; background: var(--support); color: #fff; font-weight: 600; font-size: 0.95rem;
+        text-decoration: none; font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        transition: background 0.15s;
+    }
+    .support-btn:hover { background: var(--support-hover); }
+    .support-btn svg { width: 17px; height: 17px; fill: currentColor; flex-shrink: 0; }
     :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
-    main { max-width: 880px; margin: 0 auto; padding: 8px 16px 48px; }
-    h1 { font-size: clamp(1.7rem, 5vw, 2.4rem); line-height: 1.2; margin: 16px 0 8px; }
-    .lede { color: var(--text-2); margin: 0 0 32px; max-width: 60ch; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+
+    /* ---- Hero ---- */
+    .hero {
+        background:
+            radial-gradient(ellipse at 15% 0%, color-mix(in srgb, var(--brand) 9%, transparent), transparent 60%),
+            linear-gradient(transparent, color-mix(in srgb, var(--bg-2) 75%, transparent));
+        border-bottom: 1px solid var(--line);
+    }
+    .hero .wrap { padding-top: clamp(40px, 9vw, 96px); padding-bottom: clamp(40px, 8vw, 84px); }
+    .hero h1 {
+        font-family: "Cormorant Garamond", Georgia, serif; font-weight: 500;
+        font-size: clamp(2.3rem, 7vw, 4.2rem); line-height: 1.08; letter-spacing: -0.01em;
+        margin: 0; max-width: 19ch;
+    }
+    .hero h1 em { font-style: italic; color: var(--brand); }
+    .rule { width: 64px; height: 2px; background: var(--brand); border: 0; margin: 28px 0 0; opacity: 0.7; }
+
+    /* ---- Sections ---- */
+    main section { padding-top: 56px; scroll-margin-top: 16px; }
+    .section-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 22px; }
+    .section-head h2 {
+        font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600;
+        font-size: clamp(1.7rem, 4vw, 2.1rem); margin: 0; line-height: 1.2;
+    }
+    .section-head::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+    .group-label {
+        margin: 30px 0 14px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em;
+        text-transform: uppercase; color: var(--brand);
+    }
+    .group-label:first-of-type { margin-top: 0; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
     .card {
-        display: block; padding: 18px; border: 1px solid var(--line); border-radius: 14px;
-        background: var(--surface); color: inherit; text-decoration: none;
-        transition: border-color 0.15s, transform 0.15s;
+        display: flex; flex-direction: column; overflow: hidden;
+        border: 1px solid var(--line); border-radius: 16px; background: var(--surface);
+        color: inherit; text-decoration: none; box-shadow: var(--shadow);
+        transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
     }
-    .card:hover { border-color: var(--brand); transform: translateY(-2px); }
-    .card { padding: 0; overflow: hidden; }
-    .card img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-bottom: 1px solid var(--line); }
-    .card img.fit { object-fit: contain; object-position: center; background: #fff; padding: 8px; }
-    .card h2, .card p { padding: 0 18px; }
-    .card h2 { padding-top: 14px; }
-    .card p { padding-bottom: 18px; }
-    .card h2 { margin: 0 0 6px; font-size: 1.1rem; color: var(--brand); }
-    .card p { margin: 0; color: var(--text-2); font-size: 0.93rem; }
+    .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: color-mix(in srgb, var(--brand) 40%, var(--line)); }
+    .card .thumb { aspect-ratio: 16 / 10; overflow: hidden; border-bottom: 1px solid var(--line); background: var(--bg-2); }
+    .card img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 0.35s; }
+    .card:hover img { transform: scale(1.03); }
+    .card img.fit { object-fit: contain; object-position: center; background: #fff; padding: 10px; }
+    .card .body { padding: 16px 20px 20px; }
+    .card h3 { margin: 0 0 6px; font-size: 1.12rem; font-weight: 600; color: var(--brand); }
+    .card p { margin: 0; color: var(--text-2); font-size: 0.94rem; line-height: 1.5; }
+
+    /* Writing (blog) list -- shown once posts are added */
+    .posts { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+    .posts a { display: block; padding: 16px 0; border-bottom: 1px solid var(--line); color: inherit; text-decoration: none; }
+    .posts a:hover h3 { color: var(--brand); }
+    .posts time { font-size: 0.82rem; color: var(--text-2); letter-spacing: 0.04em; }
+    .posts h3 { margin: 2px 0 4px; font-size: 1.2rem; font-weight: 600; transition: color 0.15s; }
+    .posts p { margin: 0; color: var(--text-2); font-size: 0.95rem; }
+
+    /* ---- Give ---- */
     .give {
-        margin-top: 40px; padding: 20px; border-radius: 14px; border: 1px solid var(--line);
-        background: var(--surface);
+        margin-top: 64px; padding: clamp(24px, 5vw, 40px); border-radius: 20px; text-align: center;
+        border: 1px solid var(--line); background: var(--bg-2);
     }
-    .give h2 { margin: 0 0 6px; font-size: 1.15rem; }
-    .give p { margin: 0 0 14px; color: var(--text-2); }
-    .btn {
-        display: inline-block; padding: 10px 18px; border-radius: 8px; font-weight: 600;
-        background: var(--brand); color: var(--on-brand); text-decoration: none;
-    }
-    footer { max-width: 880px; margin: 0 auto; padding: 0 16px 32px; color: var(--text-2); font-size: 0.85rem; }
-    footer button { font: inherit; color: inherit; background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }
-    #privacy { display: none; margin-top: 10px; max-width: 60ch; }
+    .give h2 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 1.8rem; margin: 0 0 8px; }
+    .give p { margin: 0 auto 20px; color: var(--text-2); max-width: 46ch; }
+
+    footer .wrap { padding-top: 40px; padding-bottom: 32px; color: var(--text-2); font-size: 0.85rem; }
+    footer button { font: inherit; color: inherit; background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; min-height: 44px; }
+    #privacy { display: none; margin-top: 4px; max-width: 60ch; }
     #privacy.open { display: block; }
 
-    /* Occasional "would you consider supporting it?" callout under the heart */
+    @media (max-width: 600px) {
+        nav.sections { display: none; }
+        .support-btn span { display: none; }
+        .support-btn { width: 44px; height: 44px; padding: 0; justify-content: center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .card, .card img { transition: none; }
+        .card:hover, .card:hover img { transform: none; }
+    }
+
+    /* Occasional "would you consider supporting it?" callout under the Support button */
     .support-wrap { position: relative; display: inline-flex; }
     #support-callout {
         display: none; position: absolute; top: calc(100% + 8px); right: 0;
@@ -103,7 +176,7 @@
         to { opacity: 1; transform: translateY(0); }
     }
     .support-callout-arrow {
-        position: absolute; top: -6px; right: 17px; width: 10px; height: 10px;
+        position: absolute; top: -6px; right: 24px; width: 10px; height: 10px;
         border-left: 1px solid var(--line); border-top: 1px solid var(--line);
         background: var(--surface); transform: rotate(45deg);
     }
@@ -114,96 +187,128 @@
         padding: 6px 12px; border: 0; border-radius: 6px; font: inherit; font-size: 0.85rem;
         text-decoration: none; white-space: nowrap; cursor: pointer;
     }
-    .support-callout-btn-primary { background: var(--brand); color: var(--on-brand); font-weight: 600; }
+    .support-callout-btn-primary { background: var(--support); color: #fff; font-weight: 600; }
+    .support-callout-btn-primary:hover { background: var(--support-hover); }
     .support-callout-btn-secondary { border: 1px solid var(--line); background: var(--surface); color: var(--text); }
     .support-callout-btn-text { padding: 6px 2px; background: none; color: var(--text-2); font-size: 0.8rem; }
     .support-callout-btn-text:hover { color: var(--text); text-decoration: underline; }
 </style>
 </head>
 <body>
+<canvas id="graph" aria-hidden="true"></canvas>
 <header>
-    <span class="brand">Taylor Drummond</span>
-    <div class="actions">
-        <button class="icon-btn" id="theme" type="button" aria-label="Toggle light/dark theme" title="Toggle theme">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
-        </button>
-        <div class="support-wrap">
-            <a class="icon-btn" id="support" href="https://buymeacoffee.com/reformedretrieval"
-               target="_blank" rel="noopener" aria-label="Support" title="Support">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-            </a>
-            <div id="support-callout" role="dialog" aria-label="Support this project">
-                <div class="support-callout-arrow"></div>
-                <p class="support-callout-title">A quick note &mdash;</p>
-                <p class="support-callout-body">This project is built and maintained in spare time so that anyone can use it for free. If it's been a help to you, would you consider supporting it? Every bit keeps it running for the next person too.</p>
-                <div class="support-callout-actions">
-                    <a href="https://buymeacoffee.com/reformedretrieval" target="_blank" rel="noopener"
-                       class="support-callout-btn support-callout-btn-primary" data-support="acted">Yes</a>
-                    <button type="button" class="support-callout-btn support-callout-btn-secondary" data-support="later">Maybe later</button>
-                    <button type="button" class="support-callout-btn support-callout-btn-text" data-support="forever">Don't ask again</button>
+    <div class="wrap">
+        <a class="brand" href="/">Taylor Drummond</a>
+        <nav class="sections" aria-label="Sections">
+            <a href="#tools">Tools</a>
+            <!-- <a href="#writing">Writing</a> — uncomment once posts are added -->
+        </nav>
+        <div class="actions">
+            <button class="icon-btn" id="theme" type="button" aria-label="Toggle light/dark theme" title="Toggle theme">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+            </button>
+            <div class="support-wrap">
+                <a class="support-btn" id="support" href="https://buymeacoffee.com/reformedretrieval"
+                   target="_blank" rel="noopener" aria-label="Support" title="Support">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 21h18a1 1 0 0 1 0 2H2a1 1 0 0 1 0-2zM20.242 11.022a1 1 0 0 0-.242-.688 2.99 2.99 0 0 0-2-.734H16V6a3 3 0 0 0-3-3H5a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3v-2.022h2a3 3 0 0 0 3-3V11.02a1 1 0 0 0-.758-.998zM14 16a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v10zm4-4.022V11.6h-2v-2h2a1 1 0 0 1 1 1v1.378a1 1 0 0 1-1 1z"/></svg>
+                    <span>Support</span>
+                </a>
+                <div id="support-callout" role="dialog" aria-label="Support these projects">
+                    <div class="support-callout-arrow"></div>
+                    <p class="support-callout-title">A quick note &mdash;</p>
+                    <p class="support-callout-body">These projects are built and maintained in spare time so that anyone can use them for free. If they've been a help to you, would you consider supporting them? Every bit keeps them running for the next person too.</p>
+                    <div class="support-callout-actions">
+                        <a href="https://buymeacoffee.com/reformedretrieval" target="_blank" rel="noopener"
+                           class="support-callout-btn support-callout-btn-primary" data-support="acted">Yes</a>
+                        <button type="button" class="support-callout-btn support-callout-btn-secondary" data-support="later">Maybe later</button>
+                        <button type="button" class="support-callout-btn support-callout-btn-text" data-support="forever">Don't ask again</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<main>
-    <h1>Tools for reading, studying, and singing Scripture</h1>
-    <p class="lede">Free, ad-free tools built for pastors, students, and families.</p>
-
-    <div class="grid">
-        <a class="card" href="/bible-search/" data-tool="bible-search">
-            <img src="img/bible-search.jpg" alt="Screenshot of BibleSearch" width="1200" height="750" loading="lazy">
-            <h2>BibleSearch</h2>
-            <p>A Hebrew and Greek search engine in the spirit of BibleWorks.</p>
-        </a>
-        <a class="card" href="/DA-Tool/" data-tool="da-tool">
-            <img class="fit" src="img/da-tool.png" alt="Screenshot of Discourse Analysis Tool" width="1200" height="750" loading="lazy">
-            <h2>Discourse Analysis Tool</h2>
-            <p>Visual discourse analysis — bracket and trace the argument of a passage.</p>
-        </a>
-        <a class="card" href="/hebrew-da/" data-tool="hebrew-da">
-            <img class="fit" src="img/hebrew-da.png" alt="Screenshot of Hebrew Discourse Analysis" width="1200" height="750" loading="lazy">
-            <h2>Hebrew Discourse Analysis</h2>
-            <p>Mainline/offline clause worksheets for Hebrew prose.</p>
-        </a>
-        <a class="card" href="/lets-sing/" data-tool="lets-sing">
-            <img src="img/lets-sing.jpg" alt="Screenshot of Let's Sing" width="1200" height="750" loading="lazy">
-            <h2>Let's Sing</h2>
-            <p>Learn your part: hymns and psalms in four-part harmony, one voice at a time.</p>
-        </a>
-        <a class="card" href="/galaxy-bible/" data-tool="galaxy-bible">
-            <img src="img/galaxy-bible.jpg" alt="Screenshot of Bible Galaxy" width="1200" height="750" loading="lazy">
-            <h2>Bible Galaxy</h2>
-            <p>A 3D galaxy of cross references showing how every part of the Bible connects.</p>
-        </a>
-        <a class="card" href="/Daily-Bible/" data-tool="daily-bible">
-            <img src="img/daily-bible.jpg" alt="Screenshot of Daily Bible" width="1200" height="750" loading="lazy">
-            <h2>Daily Bible</h2>
-            <p>The latest Daily Dose of Greek, Hebrew, and Latin, with a habit tracker.</p>
-        </a>
-        <a class="card" href="/spelling-updater/" data-tool="spelling-updater">
-            <img src="img/spelling-updater.jpg" alt="Screenshot of Spelling Updater" width="1200" height="750" loading="lazy">
-            <h2>Spelling Updater</h2>
-            <p>Modernizes archaic English spellings from a 25,000-word list.</p>
-        </a>
-        <a class="card" href="/debt-game/" data-tool="debt-game">
-            <img src="img/debt-game.jpg" alt="Screenshot of The Debt Game" width="1200" height="750" loading="lazy">
-            <h2>The Debt Game</h2>
-            <p>How much per day since a historical event would it take to equal the US debt?</p>
-        </a>
+<div class="hero">
+    <div class="wrap">
+        <h1>Free tools built for <em>pastors, students, and families.</em></h1>
+        <hr class="rule">
     </div>
+</div>
+
+<main class="wrap">
+    <section id="tools">
+        <div class="section-head"><h2>Tools</h2></div>
+
+        <p class="group-label">Study the text</p>
+        <div class="grid">
+            <a class="card" href="/bible-search/" data-tool="bible-search">
+                <div class="thumb"><img src="img/bible-search.jpg" alt="Screenshot of BibleSearch" width="1200" height="750" loading="lazy"></div>
+                <div class="body"><h3>BibleSearch</h3><p>A Hebrew and Greek search engine in the spirit of BibleWorks.</p></div>
+            </a>
+            <a class="card" href="/DA-Tool/" data-tool="da-tool">
+                <div class="thumb"><img class="fit" src="img/da-tool.png" alt="Screenshot of Discourse Analysis Tool" width="1200" height="750" loading="lazy"></div>
+                <div class="body"><h3>Discourse Analysis Tool</h3><p>Visual discourse analysis — bracket and trace the argument of a passage.</p></div>
+            </a>
+            <a class="card" href="/hebrew-da/" data-tool="hebrew-da">
+                <div class="thumb"><img class="fit" src="img/hebrew-da.png" alt="Screenshot of Hebrew Discourse Analysis" width="1200" height="750" loading="lazy"></div>
+                <div class="body"><h3>Hebrew Discourse Analysis</h3><p>Exegetical tool for the visual analysis of Hebrew prose.</p></div>
+            </a>
+            <a class="card" href="/Daily-Bible/" data-tool="daily-bible">
+                <div class="thumb"><img src="img/daily-bible.jpg" alt="Screenshot of Daily Bible" width="1200" height="750" loading="lazy"></div>
+                <div class="body"><h3>Daily Bible</h3><p>The latest Daily Dose of Greek, Hebrew, and Latin, with a habit tracker.</p></div>
+            </a>
+        </div>
+
+        <p class="group-label">Sing &amp; explore</p>
+        <div class="grid">
+            <a class="card" href="/lets-sing/" data-tool="lets-sing">
+                <div class="thumb"><img src="img/lets-sing.jpg" alt="Screenshot of Let's Sing" width="1200" height="750" loading="lazy"></div>
+                <div class="body"><h3>Let's Sing</h3><p>Learn your part: hymns and psalms in four-part harmony, one voice at a time.</p></div>
+            </a>
+            <a class="card" href="/galaxy-bible/" data-tool="galaxy-bible">
+                <div class="thumb"><img src="img/galaxy-bible.jpg" alt="Screenshot of Bible Galaxy" width="1200" height="750" loading="lazy"></div>
+                <div class="body"><h3>Bible Galaxy</h3><p>A 3D galaxy of cross references showing how every part of the Bible connects.</p></div>
+            </a>
+            <a class="card" href="/spelling-updater/" data-tool="spelling-updater">
+                <div class="thumb"><img src="img/spelling-updater.jpg" alt="Screenshot of Spelling Updater" width="1200" height="750" loading="lazy"></div>
+                <div class="body"><h3>Spelling Updater</h3><p>Modernizes archaic English spellings from a 25,000-word list.</p></div>
+            </a>
+            <a class="card" href="/debt-game/" data-tool="debt-game">
+                <div class="thumb"><img src="img/debt-game.jpg" alt="Screenshot of The Debt Game" width="1200" height="750" loading="lazy"></div>
+                <div class="body"><h3>The Debt Game</h3><p>How much per day since a historical event would it take to equal the US debt?</p></div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Writing: remove `hidden` and the nav comment above once blog posts are migrated.
+         Each post is one <li>; newest first. -->
+    <section id="writing" hidden>
+        <div class="section-head"><h2>Writing</h2></div>
+        <ul class="posts">
+            <li><a href="/writing/example-post/">
+                <time datetime="2020-01-01">January 1, 2020</time>
+                <h3>Post title</h3>
+                <p>One-sentence summary of the post.</p>
+            </a></li>
+        </ul>
+    </section>
 
     <section class="give">
         <h2>Support this work</h2>
         <p>These tools are free and will stay that way. If they've helped you, a gift keeps them running and improving.</p>
-        <a class="btn" id="give-btn" href="https://buymeacoffee.com/reformedretrieval" target="_blank" rel="noopener">Buy me a coffee</a>
+        <a class="support-btn" id="give-btn" href="https://buymeacoffee.com/reformedretrieval" target="_blank" rel="noopener" style="height:46px;padding:0 22px">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 21h18a1 1 0 0 1 0 2H2a1 1 0 0 1 0-2zM20.242 11.022a1 1 0 0 0-.242-.688 2.99 2.99 0 0 0-2-.734H16V6a3 3 0 0 0-3-3H5a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3v-2.022h2a3 3 0 0 0 3-3V11.02a1 1 0 0 0-.758-.998zM14 16a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v10zm4-4.022V11.6h-2v-2h2a1 1 0 0 1 1 1v1.378a1 1 0 0 1-1 1z"/></svg>
+            Buy me a coffee
+        </a>
     </section>
 </main>
 
 <footer>
-    <button type="button" id="privacy-toggle" aria-expanded="false" aria-controls="privacy">Privacy</button>
-    <p id="privacy"><strong>Privacy.</strong> This site uses Google Analytics to count visits and see which features get used, so the tools can be improved. You don't need an account, and nothing you type into the site is collected. Your data will never be sold or given away.</p>
+    <div class="wrap">
+        <button type="button" id="privacy-toggle" aria-expanded="false" aria-controls="privacy">Privacy</button>
+        <p id="privacy"><strong>Privacy.</strong> This site uses Google Analytics to count visits and see which features get used, so the tools can be improved. You don't need an account, and nothing you type into the site is collected. Your data will never be sold or given away.</p>
+    </div>
 </footer>
 
 <script>
@@ -232,7 +337,84 @@ document.getElementById("theme").addEventListener("click", () => {
     const next = dark ? "light" : "dark";
     document.documentElement.dataset.theme = next;
     store.set("home_theme", next);
+    drawGraph();
 });
+
+// ---- Background node graph (faded, like Obsidian's graph view) ----
+// Clusters of notes around hub nodes, hubs linked to their nearest neighbours.
+// Seeded, so the same picture comes back on every visit. Static (no animation).
+const graphCanvas = document.getElementById("graph");
+let graphWidth = 0;
+
+function drawGraph() {
+    const w = innerWidth;
+    // Tall enough for the phone address bar to slide away without a redraw
+    const h = Math.max(innerHeight, screen.height);
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    graphCanvas.width = w * dpr;
+    graphCanvas.height = h * dpr;
+    graphCanvas.style.height = h + "px";
+    graphWidth = w;
+
+    const ctx = graphCanvas.getContext("2d");
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const css = getComputedStyle(document.documentElement);
+    const color = (name) => css.getPropertyValue(name).trim();
+
+    let seed = 1689;
+    const rand = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+
+    const nodes = [], hubs = [], edges = new Map();
+    const link = (a, b) => {
+        const key = a.id < b.id ? a.id + "-" + b.id : b.id + "-" + a.id;
+        if (a !== b && !edges.has(key)) { edges.set(key, [a, b]); a.deg++; b.deg++; }
+    };
+    const addNode = (x, y) => { const n = { id: nodes.length, x, y, deg: 0 }; nodes.push(n); return n; };
+
+    const scale = Math.min(1, w / 900);
+    const hubCount = Math.max(6, Math.round((w * h) / 85000));
+    for (let i = 0; i < hubCount; i++) {
+        const hub = addNode(rand() * w, rand() * h);
+        hub.hub = true;
+        hubs.push(hub);
+        const satellites = 3 + Math.floor(rand() * 11);
+        for (let k = 0; k < satellites; k++) {
+            const angle = rand() * Math.PI * 2, r = (28 + rand() * 105) * (0.6 + 0.4 * scale);
+            link(hub, addNode(hub.x + Math.cos(angle) * r, hub.y + Math.sin(angle) * r));
+        }
+    }
+    hubs.forEach((hub) =>
+        hubs.filter((o) => o !== hub).sort((a, b) => dist(hub, a) - dist(hub, b))
+            .slice(0, 1 + Math.floor(rand() * 2)).forEach((o) => link(hub, o))
+    );
+    // A few cross-links between nearby notes in neighbouring clusters
+    nodes.forEach((n) => {
+        if (n.hub || rand() > 0.18) return;
+        const near = nodes.filter((o) => o !== n && !o.hub && dist(n, o) < 90)
+            .sort((a, b) => dist(n, a) - dist(n, b))[0];
+        if (near) link(n, near);
+    });
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = color("--graph-line");
+    ctx.beginPath();
+    edges.forEach(([a, b]) => { ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); });
+    ctx.stroke();
+
+    const node = color("--graph-node"), accent = color("--graph-accent");
+    nodes.forEach((n) => {
+        ctx.fillStyle = n.hub && n.id % 3 === 0 ? accent : node;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 1.6 + Math.sqrt(n.deg) * 1.15, 0, Math.PI * 2);
+        ctx.fill();
+    });
+}
+
+drawGraph();
+addEventListener("resize", () => { if (innerWidth !== graphWidth || innerHeight > parseFloat(graphCanvas.style.height)) drawGraph(); });
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", drawGraph);
 
 // ---- Privacy note ----
 const privacyToggle = document.getElementById("privacy-toggle");
@@ -250,7 +432,7 @@ document.getElementById("give-btn").addEventListener("click", () => track("suppo
 // ---- Support callout (occasional, dismissible ask for financial support) -------
 // Never on first visit; first appears once the site has actually been used
 // (10 visits OR 3 distinct days), then resurfaces roughly every 24 days after
-// "Maybe later". Stops popping up (the heart itself always stays) after 5
+// "Maybe later". Stops popping up (the Support button itself always stays) after 5
 // "Maybe later"s, or for good after "Don't ask again" or clicking through.
 // Keys are prefixed "home_" because every app shares this origin.
 
